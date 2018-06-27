@@ -18,15 +18,25 @@ function DailyView({ events, date }) {
       {events.length
         ? events.map(event => {
             return event.day === formattedDay ? (
-              <p key={event.id}>
-                <span>{event.eventName} </span>
-                <span>
-                  {`
-                  from ${event.startTime} to ${event.endTime}
-                  Details: ${event.description}
-                  `}
-                </span>
-              </p>
+              <div key={event.id}>
+                <span />
+                <h3>{event.eventName} </h3>
+                <ul className="list">
+                  {event.startTime && event.endTime ? (
+                    <li>
+                      from {event.startTime} to {event.endTime}
+                    </li>
+                  ) : event.startTime && !event.endTime ? (
+                    <li>from {event.startTime}</li>
+                  ) : !event.startTime && event.endTime ? (
+                    <li>to {event.endTime}</li>
+                  ) : null}
+
+                  {event.description ? (
+                    <li>Details: ${event.description}</li>
+                  ) : null}
+                </ul>
+              </div>
             ) : null;
           })
         : null}

@@ -95,19 +95,17 @@ class UpdateForm extends Component {
               <Form.Input
                 label="Event name"
                 required
-                placeholder="Event Name"
+                placeholder={this.props.event.eventName}
                 name="eventName"
               />
               <Form.Group widths="equal">
                 <Form.Select
-                  required
                   label="Start Time"
                   options={timeOptions}
                   name="startTime"
                   onChange={this.handleSelectChange}
                 />
                 <Form.Select
-                  required
                   label="AM/PM"
                   options={ampmOptions}
                   name="startTimeAMPM"
@@ -116,14 +114,12 @@ class UpdateForm extends Component {
               </Form.Group>
               <Form.Group widths="equal">
                 <Form.Select
-                  required
                   label="End Time"
                   options={timeOptions}
                   name="endTime"
                   onChange={this.handleSelectChange}
                 />
                 <Form.Select
-                  required
                   label="AM/PM"
                   options={ampmOptions}
                   name="endTimeAMPM"
@@ -153,34 +149,62 @@ class UpdateForm extends Component {
               <Form.Field
                 control={TextArea}
                 label="Event details"
-                placeholder="Tell us more about the event..."
+                placeholder={this.props.event.description}
                 name="description"
               />
               <Button type="submit">Submit</Button>
             </Form>
           ) : null}
 
-          {!this.state.update ? (
-            <Button.Group id="updateButton">
-              <Button
-                size="massive"
-                positive
-                type="submit"
-                onClick={this.handleUpdate}
-              >
-                Update
-              </Button>
-              <Button.Or size="massive" />
-              <Button
-                size="massive"
-                negative
-                type="submit"
-                onClick={() => this.handleDelete(this.props.event.id)}
-              >
-                Delete
-              </Button>
-            </Button.Group>
-          ) : null}
+          <div id="updatebox">
+            {!this.state.update ? (
+              <div className="ui success message">
+                <div className="header">{this.props.event.eventName}</div>
+                <ul className="list">
+                  {this.props.event.startTime && this.props.event.endTime ? (
+                    <li>
+                      Time: from {this.props.event.startTime} to{' '}
+                      {this.props.event.endTime}
+                    </li>
+                  ) : this.props.event.startTime &&
+                  !this.props.event.endTime ? (
+                    <li>Time: from {this.props.event.startTime}</li>
+                  ) : !this.props.event.startTime &&
+                  this.props.event.endTime ? (
+                    <li>Time: to {this.props.event.endTime}</li>
+                  ) : null}
+
+                  {this.props.event.description ? (
+                    <li>Details: {this.props.event.description}</li>
+                  ) : null}
+                </ul>
+              </div>
+            ) : null}
+
+            <span />
+
+            {!this.state.update ? (
+              <Button.Group id="updateButton">
+                <Button
+                  size="big"
+                  positive
+                  type="submit"
+                  onClick={this.handleUpdate}
+                >
+                  Update
+                </Button>
+                <Button.Or size="massive" />
+                <Button
+                  size="big"
+                  negative
+                  type="submit"
+                  onClick={() => this.handleDelete(this.props.event.id)}
+                >
+                  Delete
+                </Button>
+              </Button.Group>
+            ) : null}
+          </div>
 
           {/* {!this.state.update ? (
             <Button type="submit" onClick={this.handleUpdate}>
