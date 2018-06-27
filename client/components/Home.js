@@ -1,11 +1,9 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import Calendar from './Calendar'
-import NavBar from './NavBar'
-import {Segment} from 'semantic-ui-react'
-/**
- * COMPONENT
- */
+import React from 'react';
+import { connect } from 'react-redux';
+import Calendar from './Calendar';
+import NavBar from './NavBar';
+import { Segment } from 'semantic-ui-react';
+
 export const Home = () => {
   return (
     <div>
@@ -14,7 +12,7 @@ export const Home = () => {
         <Calendar />
       </Segment>
     </div>
-  )
-}
+  );
+};
 
-export default connect()(Home)
+export default connect()(Home);

@@ -1,17 +1,16 @@
-import React, {Component} from 'react'
-import {Button} from 'semantic-ui-react'
-import {connect} from 'react-redux'
-import {updateView} from '../store/views'
+import React, { Component } from 'react';
+import { Button } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { updateView } from '../store/views';
 
 class SubHeader extends Component {
   constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this)
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e, {name}) {
-    //sets its local state and then dispatches to update the state in the store
-    this.props.viewChange(name)
+  handleClick(event, { name }) {
+    this.props.viewChange(name);
   }
 
   render() {
@@ -29,22 +28,19 @@ class SubHeader extends Component {
           </Button>
         </Button.Group>
       </div>
-    )
+    );
   }
-}
-
-const mapState = () => {
-  // return {
-  //   events: state.events
-  // }
 }
 
 const mapDispatch = dispatch => {
   return {
     viewChange: view => {
-      dispatch(updateView(view))
-    }
-  }
-}
+      dispatch(updateView(view));
+    },
+  };
+};
 
-export default connect(null, mapDispatch)(SubHeader)
+export default connect(
+  null,
+  mapDispatch
+)(SubHeader);

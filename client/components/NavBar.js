@@ -1,5 +1,5 @@
-import React from 'react'
-import {Grid, Segment} from 'semantic-ui-react'
+import React from 'react';
+import { Grid, Segment } from 'semantic-ui-react';
 
 const NavBar = () => (
   <Grid columns="equal" divided inverted>
@@ -21,6 +21,6 @@ const NavBar = () => (
       </Grid.Column>
     </Grid.Row>
   </Grid>
-)
+);
 
-export default NavBar
+export default NavBar;

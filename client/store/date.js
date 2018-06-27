@@ -1,17 +1,17 @@
-const UPDATE_CURRENT_DATE = 'UPDATE_CURRENT_DATE'
+const UPDATE_CURRENT_DATE = 'UPDATE_CURRENT_DATE';
 
 export const updateSelectedDate = date => {
   return {
     type: UPDATE_CURRENT_DATE,
-    date
-  }
-}
+    date,
+  };
+};
 
 export default function(state = new Date(), action) {
   switch (action.type) {
     case UPDATE_CURRENT_DATE:
-      return action.date
+      return action.date;
     default:
-      return state
+      return state;
   }
 }

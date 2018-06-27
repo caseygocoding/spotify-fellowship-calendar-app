@@ -1,101 +1,67 @@
-import React, {Component} from 'react'
-import dateFns from 'date-fns'
-import {connect} from 'react-redux'
-import {updateEventInDb, deleteEventFromDb} from '../store'
-import {Button, Modal, Form, TextArea} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import dateFns from 'date-fns';
+import { connect } from 'react-redux';
+import { updateSingleEvent, deleteSingleEvent } from '../store';
+import { Button, Modal, Form, TextArea } from 'semantic-ui-react';
+import { transFormtimeOptions } from './helperFunctions';
 
-const timeOptions = [
-  {key: '100', text: '1:00', value: '1:00'},
-  {key: '130', text: '1:30', value: '1:30'},
-  {key: '200', text: '2:00', value: '2:00'},
-  {key: '230', text: '2:30', value: '2:30'},
-  {key: '300', text: '3:00', value: '3:00'},
-  {key: '330', text: '3:30', value: '3:30'},
-  {key: '400', text: '4:00', value: '4:00'},
-  {key: '430', text: '4:30', value: '4:30'},
-  {key: '500', text: '5:00', value: '5:00'},
-  {key: '530', text: '5:30', value: '5:30'},
-  {key: '600', text: '6:00', value: '6:00'},
-  {key: '630', text: '6:30', value: '6:30'},
-  {key: '700', text: '7:00', value: '7:00'},
-  {key: '730', text: '7:30', value: '7:30'},
-  {key: '800', text: '8:00', value: '8:00'},
-  {key: '830', text: '8:30', value: '8:30'},
-  {key: '900', text: '9:00', value: '9:00'},
-  {key: '930', text: '9:30', value: '9:30'},
-  {key: '1000', text: '10:00', value: '10:00'},
-  {key: '1030', text: '10:30', value: '10:30'},
-  {key: '1100', text: '11:00', value: '11:00'},
-  {key: '1130', text: '11:30', value: '11:30'},
-  {key: '1200', text: '12:00', value: '12:00'},
-  {key: '1230', text: '12:30', value: '12:30'},
-]
+const timeOptions = transFormtimeOptions;
 
 const ampmOptions = [
-  {key: 'am', text: 'AM', value: 'am'},
-  {key: 'pm', text: 'PM', value: 'pm'},
-]
+  { key: 'am', text: 'AM', value: 'am' },
+  { key: 'pm', text: 'PM', value: 'pm' },
+];
 
-class Editform extends Component {
+class UpdateForm extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       modalOpen: false,
       startTime: '',
       startTimeAMPM: '',
       endTime: '',
       endTimeAMPM: '',
-      edit: false,
-    }
+      update: false,
+    };
 
-    this.handleSelectChange = this.handleSelectChange.bind(this)
-    this.handleOpen = this.handleOpen.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
-    this.handleEdit = this.handleEdit.bind(this)
-    this.handleEditFalse = this.handleEditFalse.bind(this)
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpdateOff = this.handleUpdateOff.bind(this);
   }
 
-  handleSelectChange(e, {name, value}) {
+  handleSelectChange(event, { name, value }) {
     if (name === 'startTime') {
-      this.setState({
-        startTime: value,
-      })
+      this.setState({ startTime: value });
     } else if (name === 'startTimeAMPM') {
-      this.setState({
-        startTimeAMPM: value,
-      })
+      this.setState({ startTimeAMPM: value });
     } else if (name === 'endTime') {
-      this.setState({
-        endTime: value,
-      })
+      this.setState({ endTime: value });
     } else if (name === 'endTimeAMPM') {
-      this.setState({
-        endTimeAMPM: value,
-      })
+      this.setState({ endTimeAMPM: value });
     }
   }
   handleOpen() {
-    this.setState({modalOpen: true})
+    this.setState({ modalOpen: true });
   }
   handleClose() {
-    this.setState({modalOpen: false})
+    this.setState({ modalOpen: false });
   }
-
   handleDelete(id) {
-    this.props.deleteEvent(id)
+    this.props.deleteSingleEvent(id);
   }
-
-  handleEdit() {
-    this.setState({edit: true})
+  handleUpdate() {
+    this.setState({ update: true });
   }
-  handleEditFalse() {
-    this.setState({edit: false})
+  handleUpdateOff() {
+    this.setState({ update: false });
   }
 
   render() {
-    const fullDate = dateFns.format(this.props.selectedDate, 'MM/DD/YYYY')
-    const {handleSubmit} = this.props
+    const fullDate = dateFns.format(this.props.selectedDate, 'MM/DD/YYYY');
+    const { handleSubmit } = this.props;
 
     return (
       <Modal
@@ -111,9 +77,10 @@ class Editform extends Component {
       >
         <Modal.Header>Edit Event on {fullDate}</Modal.Header>
         <Modal.Content image>
-          <i aria-hidden="true" className="write massive icon" />
-
-          {this.state.edit ? (
+          {!this.state.update ? null : (
+            <i aria-hidden="true" className="write massive icon" />
+          )}
+          {this.state.update ? (
             <Form
               onSubmit={event =>
                 handleSubmit(
@@ -121,7 +88,7 @@ class Editform extends Component {
                   this.props.event.id,
                   fullDate,
                   this.handleClose,
-                  this.handleEditFalse
+                  this.handleUpdateOff
                 )
               }
             >
@@ -164,22 +131,22 @@ class Editform extends Component {
                 />
               </Form.Group>
               <Form.Input
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 name="startTime"
                 value={this.state.startTime}
               />
               <Form.Input
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 name="startTimeAMPM"
                 value={this.state.startTimeAMPM}
               />
               <Form.Input
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 name="endTime"
                 value={this.state.endTime}
               />
               <Form.Input
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 name="endTimeAMPM"
                 value={this.state.endTimeAMPM}
               />
@@ -193,20 +160,42 @@ class Editform extends Component {
             </Form>
           ) : null}
 
-          {!this.state.edit ? (
-            <Button type="submit" onClick={this.handleEdit}>
+          {!this.state.update ? (
+            <Button.Group id="updateButton">
+              <Button
+                size="massive"
+                positive
+                type="submit"
+                onClick={this.handleUpdate}
+              >
+                Update
+              </Button>
+              <Button.Or size="massive" />
+              <Button
+                size="massive"
+                negative
+                type="submit"
+                onClick={() => this.handleDelete(this.props.event.id)}
+              >
+                Delete
+              </Button>
+            </Button.Group>
+          ) : null}
+
+          {/* {!this.state.update ? (
+            <Button type="submit" onClick={this.handleUpdate}>
               Update
             </Button>
           ) : null}
 
-          {!this.state.edit ? (
+          {!this.state.update ? (
             <Button
               type="submit"
               onClick={() => this.handleDelete(this.props.event.id)}
             >
               Delete
             </Button>
-          ) : null}
+          ) : null} */}
         </Modal.Content>
         <Modal.Actions>
           <Button color="green" onClick={this.handleClose} inverted>
@@ -214,7 +203,7 @@ class Editform extends Component {
           </Button>
         </Modal.Actions>
       </Modal>
-    )
+    );
   }
 }
 
@@ -222,24 +211,24 @@ const mapState = state => {
   return {
     events: state.events,
     selectedDate: state.date,
-  }
-}
+  };
+};
 const mapDispatch = dispatch => {
   return {
-    handleSubmit: (event, id, fulldate, handleClose, handleEditFalse) => {
-      event.preventDefault()
-      const eventName = event.target.eventName.value
+    handleSubmit: (event, id, fulldate, handleClose, handleUpdateOff) => {
+      event.preventDefault();
+      const eventName = event.target.eventName.value;
       const startTime =
-        event.target.startTime.value + event.target.startTimeAMPM.value
+        event.target.startTime.value + event.target.startTimeAMPM.value;
       const endTime =
-        event.target.endTime.value + event.target.endTimeAMPM.value
-      const description = event.target.description.value
-      const year = Number(fulldate.split('/')[2])
-      const month = Number(fulldate.split('/')[0])
-      const day = Number(fulldate.split('/')[1])
+        event.target.endTime.value + event.target.endTimeAMPM.value;
+      const description = event.target.description.value;
+      const year = Number(fulldate.split('/')[2]);
+      const month = Number(fulldate.split('/')[0]);
+      const day = Number(fulldate.split('/')[1]);
 
       dispatch(
-        updateEventInDb(id, {
+        updateSingleEvent(id, {
           eventName,
           startTime,
           endTime,
@@ -248,12 +237,16 @@ const mapDispatch = dispatch => {
           month,
           day,
         })
-      )
-      handleEditFalse(), handleClose()
+      );
+      handleUpdateOff();
+      handleClose();
     },
-    deleteEvent: id => {
-      dispatch(deleteEventFromDb(id))
+    deleteSingleEvent: id => {
+      dispatch(deleteSingleEvent(id));
     },
-  }
-}
-export default connect(mapState, mapDispatch)(Editform)
+  };
+};
+export default connect(
+  mapState,
+  mapDispatch
+)(UpdateForm);

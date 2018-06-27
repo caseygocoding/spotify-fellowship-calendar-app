@@ -7,6 +7,18 @@ a:hover {
   color: red;
 }
 
+#add {
+  margin: 0
+}
+
+.ui form,
+#updateButton,
+i.massive.icon,
+i.massive.icons {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .hidder {
   display: none;
 }
@@ -106,7 +118,7 @@ body {
 .calendar .header .icon:hover {
   transform: scale(1.75);
   transition: 0.25s ease-out;
-  color: #00C555;
+  color: #00c555;
 }
 
 .calendar .header .icon:first-of-type {

@@ -1,5 +1,5 @@
-import React from 'react'
-import {Table} from 'semantic-ui-react'
+import React from 'react';
+import { Table } from 'semantic-ui-react';
 
 const AllEvents = props => (
   <Table striped>
@@ -26,10 +26,10 @@ const AllEvents = props => (
               </Table.Cell>
               <Table.Cell>{event.description}</Table.Cell>
             </Table.Row>
-          )
+          );
         })}
     </Table.Body>
   </Table>
-)
+);
 
-export default AllEvents
+export default AllEvents;

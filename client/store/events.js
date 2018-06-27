@@ -4,14 +4,8 @@ const POST_EVENT = 'POST_EVENT';
 const DELETE_EVENT = 'DELETE_EVENT';
 const PUT_EVENT = 'PUT_EVENT';
 
-/**
- * INITIAL STATE
- */
 const defaultEvent = [];
 
-/**
- * ACTION CREATORS
- */
 export const getEvents = events => {
   return {
     type: GET_EVENTS,
@@ -40,10 +34,6 @@ export const updateEvent = event => {
   };
 };
 
-/**
- * THUNK CREATORS
- */
-
 export const getAllEvents = (month, year) => dispatch => {
   return axios
     .get(`/api/events/${month}/${year}`, { month: month, year: year })
@@ -63,7 +53,7 @@ export const addEvent = eventDetails => async dispatch => {
   }
 };
 
-export const deleteEventFromDb = id => dispatch => {
+export const deleteSingleEvent = id => dispatch => {
   return axios
     .delete(`/api/events/${id}`)
     .then(res => res.data)
@@ -73,7 +63,7 @@ export const deleteEventFromDb = id => dispatch => {
     .catch(err => console.log(err));
 };
 
-export const updateEventInDb = (id, eventObj) => dispatch => {
+export const updateSingleEvent = (id, eventObj) => dispatch => {
   return axios
     .put(`/api/events/${id}`, eventObj)
     .then(res => res.data)
@@ -83,9 +73,6 @@ export const updateEventInDb = (id, eventObj) => dispatch => {
     .catch(err => console.log(err));
 };
 
-/**
- * REDUCER
- */
 export default function(state = defaultEvent, action) {
   switch (action.type) {
     case GET_EVENTS:
